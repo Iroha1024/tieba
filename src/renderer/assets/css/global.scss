@@ -1,3 +1,7 @@
 $hoverColor: #6de7ff;
 $clickedColor: #2eedd8;
-$bnHeight: 40px;
+$bnHeight: 50px;
+$bgColor: #E9EEF3;
+:export {
+    bgColor :$bgColor;
+}

@@ -8,7 +8,17 @@ export default new Router({
     {
       path: '/home',
       name: 'home',
-      component: () => import('../pages/home.vue')
+      component: () => import('../pages/home.vue'),
+      children: [
+          {
+              path: '*',
+              component: () => import('components/home/homeMain/homeMain.vue')
+          },
+        //   {
+        //       path: '/home',
+        //       redirect: '/home/recommend'
+        //   }
+      ]
     },
     {
       path: '/follow',
@@ -26,7 +36,7 @@ export default new Router({
       component: () => import('../pages/info.vue')
     },
     {
-      path: '*',
+      path: '/',
       redirect: '/home'
     }
   ]
