@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="info">
         个人信息
     </div>
 </template>
@@ -10,6 +10,6 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
 </style>

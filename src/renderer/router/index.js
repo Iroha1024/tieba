@@ -14,10 +14,6 @@ export default new Router({
               path: '*',
               component: () => import('components/home/homeMain/homeMain.vue')
           },
-        //   {
-        //       path: '/home',
-        //       redirect: '/home/recommend'
-        //   }
       ]
     },
     {

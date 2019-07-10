@@ -1,11 +1,13 @@
 <template>
     <div class="home">
         <el-container>
-            <el-aside>
-                <home-aside @sendDefaultUrl="updateUrl"></home-aside>
+            <el-aside width="150px">
+                <home-aside @sendDefaultUrl="initUrl"></home-aside>
             </el-aside>
             <el-main>
-                <router-view></router-view>
+                <keep-alive>
+                    <router-view></router-view>
+                </keep-alive>
             </el-main>
         </el-container>
     </div>
@@ -16,22 +18,25 @@ import homeAside from 'components/home/homeAside/homeAside.vue'
 export default {
     data() {
         return {
-            retainUrl: ''
+            retainUrl: '',
+            defaultUrl: ''
         }
     },
     components: {
         homeAside
     },
     methods: {
-        updateUrl(url) {
-            this.retainUrl = url;
+        //初始化时设置url
+        initUrl(url) {
+            this.defaultUrl = url;
             this.$router.push(url);
         }
     },
     watch: {
+        //点击主页时，自动跳转
         retainUrl(val) {
             if (val == '/home') {
-                this.$router.push('/home/recommend');
+                this.$router.push(this.defaultUrl);
             }
         }
     },
@@ -44,6 +49,7 @@ export default {
             }
         })
     },
+    //记录更新路由
     beforeRouteUpdate(to, from, next) {
         this.retainUrl = to.path;
         next();
@@ -57,16 +63,13 @@ export default {
         .el-container {
             height: 100%;
             .el-aside {
-                background-color: #D3DCE6;
+                background-color: #fff;
                 color: #333;
-                text-align: center;
             }
             .el-main {
                 background-color: #E9EEF3;
                 color: #333;
-                text-align: center;
             }
         }
     }
-    
 </style>

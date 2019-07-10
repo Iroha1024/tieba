@@ -1,7 +1,11 @@
+//底部导航栏
 $hoverColor: #6de7ff;
 $clickedColor: #2eedd8;
 $bnHeight: 50px;
+
+//全局变量
 $bgColor: #E9EEF3;
+
 :export {
     bgColor :$bgColor;
 }

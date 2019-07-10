@@ -31,6 +31,6 @@ export default {
 
 <style lang="scss" scoped>
     #app {
-        height: calc(100% - 30px);
+        height: 100%;
     }
 </style>
