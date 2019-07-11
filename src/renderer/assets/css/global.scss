@@ -1,11 +1,13 @@
 //底部导航栏
-$hoverColor: #6de7ff;
-$clickedColor: #2eedd8;
-$bnHeight: 50px;
+$hover-color: #6de7ff;
+$clicked-color: #2eedd8;
+$bottom-nav-height: 50px;
 
 //全局变量
-$bgColor: #E9EEF3;
+$bg-color: #E9EEF3;
+$font-color: #333;
 
-:export {
-    bgColor :$bgColor;
+//element滑轮
+ /deep/ .el-scrollbar__wrap {
+    overflow-x: hidden;
 }

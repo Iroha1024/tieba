@@ -33,7 +33,7 @@ let rendererConfig = {
     rules: [
       {
         test: /\.scss$/,
-        use: ['vue-style-loader', 'css-loader', 'sass-loader']
+        use: ['vue-style-loader', 'css-loader', 'sass-loader?data=@import "src/renderer/assets/css/global";']
       },
       {
         test: /\.sass$/,

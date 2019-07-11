@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~css/global';
+// @import '~css/global';
     #bottom-nav {
         position: absolute;
         bottom: 0;
@@ -64,21 +64,21 @@ export default {
         font-size:0;
         border-radius: 15px 15px 0 0;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        background: $bgColor;
+        background: $bg-color;
         div {
             display: inline-block;
             width: 25%;
             border-radius: 15px 15px 0 0;
             text-align: center;
-            font-size: $bnHeight * 0.5;
-            height: $bnHeight;
-            line-height: $bnHeight * 0.8;
+            font-size: $bottom-nav-height * 0.5;
+            height: $bottom-nav-height;
+            line-height: $bottom-nav-height * 0.8;
             cursor: pointer;
             .clicked {
-                width: $bnHeight;
-                height: $bnHeight;
-                border-radius: $bnHeight / 2;
-                background: $clickedColor;
+                width: $bottom-nav-height;
+                height: $bottom-nav-height;
+                border-radius: $bottom-nav-height / 2;
+                background: $clicked-color;
             }
             .info {
                 font-size: 15px;
@@ -86,7 +86,7 @@ export default {
             }
         }
         .hover:hover {
-            background: $hoverColor;
+            background: $hover-color;
         }
     }
 </style>

@@ -9,7 +9,6 @@
 
 <script>
 import bottomNav from 'components/bottomNavigation/bottomNavigation'
-import global from 'css/global.scss'
 
 export default {
     name: 'tieba',
@@ -23,7 +22,6 @@ export default {
         changeBodyStyle() {
             let body = document.body;
             body.style.height = '100%';
-            body.style.background = global.bgColor;
         }
     },
 }

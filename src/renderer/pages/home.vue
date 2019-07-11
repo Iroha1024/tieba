@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import homeAside from 'components/home/homeAside/homeAside.vue'
+import homeAside from 'components/home/homeAside/homeAside'
 export default {
     data() {
         return {
@@ -29,11 +29,12 @@ export default {
         //初始化时设置url
         initUrl(url) {
             this.defaultUrl = url;
+            this.retainUrl = url;
             this.$router.push(url);
         }
     },
     watch: {
-        //点击主页时，自动跳转
+        // 点击主页时，自动跳转
         retainUrl(val) {
             if (val == '/home') {
                 this.$router.push(this.defaultUrl);
@@ -43,7 +44,6 @@ export default {
     //若曾访问，则回到原先页面
     beforeRouteEnter (to, from, next) {
         next((vm) => {
-            // console.log(vm.$router);
             if (vm.retainUrl) {
                 vm.$router.push(vm.retainUrl)
             }
@@ -64,11 +64,12 @@ export default {
             height: 100%;
             .el-aside {
                 background-color: #fff;
-                color: #333;
+                color: $font-color;
             }
             .el-main {
-                background-color: #E9EEF3;
-                color: #333;
+                padding-bottom: $bottom-nav-height;
+                background-color: $bg-color;
+                color: $font-color;
             }
         }
     }

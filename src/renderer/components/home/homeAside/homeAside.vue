@@ -47,11 +47,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    /deep/ .el-scrollbar__wrap {
-        overflow-x: hidden;
-    }
     .homeAside {
-        height: calc(100% - 50px);
+        height: calc(100% - #{$bottom-nav-height});
         .el-menu-item {
             overflow: hidden;
             text-overflow: ellipsis;
