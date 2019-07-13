@@ -28,6 +28,7 @@ export default {
         height: 280px;
         background: #d3dce6;
         overflow: hidden;
+        cursor: pointer;
         .el-image {
             height: 100%;
             width: 100%;

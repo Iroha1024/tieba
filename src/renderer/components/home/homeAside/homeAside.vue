@@ -29,6 +29,7 @@ export default {
       };
     },
     mounted() {
+        this.addChildrenRoute();
         //发送默认跳转url给主页
         this.$emit('sendDefaultUrl', this.link[0].url);
     },
@@ -42,6 +43,21 @@ export default {
                 }
             }
         },
+    },
+    methods: {
+        addChildrenRoute() {
+            this.link.forEach(link => {
+                let url = link.url.split('/').pop();
+                // console.log(url);
+                this.$router.options.routes[0].children.push({
+                    name: url,
+                    path: url,
+                    component: () => import('components/home/homeMain/homeMain'),
+                })
+            })
+            this.$router.addRoutes(this.$router.options.routes);
+            // console.log(this.$router);
+        }
     },
 }
 </script>

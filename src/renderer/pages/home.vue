@@ -6,7 +6,7 @@
             </el-aside>
             <el-main>
                 <keep-alive>
-                    <router-view></router-view>
+                    <router-view :key="$route.name" ></router-view>
                 </keep-alive>
             </el-main>
         </el-container>
@@ -31,19 +31,13 @@ export default {
             this.defaultUrl = url;
             this.retainUrl = url;
             this.$router.push(url);
-        }
-    },
-    watch: {
-        // 点击主页时，自动跳转
-        retainUrl(val) {
-            if (val == '/home') {
-                this.$router.push(this.defaultUrl);
-            }
+            // console.log('push');
         }
     },
     //若曾访问，则回到原先页面
     beforeRouteEnter (to, from, next) {
         next((vm) => {
+            // console.log('enter', to.path);
             if (vm.retainUrl) {
                 vm.$router.push(vm.retainUrl)
             }
@@ -51,6 +45,7 @@ export default {
     },
     //记录更新路由
     beforeRouteUpdate(to, from, next) {
+        // console.log('update',to.path);
         this.retainUrl = to.path;
         next();
     }
