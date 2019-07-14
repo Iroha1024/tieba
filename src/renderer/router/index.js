@@ -9,7 +9,11 @@ export default new Router({
             path: '/home',
             component: () => import('../pages/home'),
             children: [
-               
+               {
+                    path: 'article/:aid',
+                    name: 'article',
+                    component: () => import('components/article/article')
+               }
             ]
         },
         {

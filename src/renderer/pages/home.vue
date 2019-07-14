@@ -6,7 +6,7 @@
             </el-aside>
             <el-main>
                 <keep-alive>
-                    <router-view :key="$route.name" ></router-view>
+                    <router-view :key="$route.path"></router-view>
                 </keep-alive>
             </el-main>
         </el-container>
@@ -38,6 +38,8 @@ export default {
     beforeRouteEnter (to, from, next) {
         next((vm) => {
             // console.log('enter', to.path);
+            //非home页面访问才用跳转原先页面
+            if (to.path != '/home') return;
             if (vm.retainUrl) {
                 vm.$router.push(vm.retainUrl)
             }

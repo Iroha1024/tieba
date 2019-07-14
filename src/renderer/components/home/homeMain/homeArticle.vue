@@ -1,16 +1,18 @@
 <template>
     <div class="">
-        <div class="grid-content">
-            <el-image :src="article.imgUrl" fit="cover" lazy>
-                <div slot="error" class="image-slot">
-                    <i class="el-icon-picture-outline"></i>
+        <router-link :to="{name: 'article', params: {aid: article.aid}}" tag="div" @click.native="log" v-if="article.aid">
+            <div class="grid-content">
+                <el-image :src="article.imgUrl" fit="cover" lazy>
+                    <div slot="error" class="image-slot">
+                        <i class="el-icon-picture-outline"></i>
+                    </div>
+                </el-image>
+                <div class="word">
+                    <div class="title">{{ article.title }}</div>
+                    <div class="content">{{ article.content }}</div>
                 </div>
-            </el-image>
-            <div class="word">
-                <div class="title">{{ article.title }}</div>
-                <div class="content">{{ article.content }}</div>
             </div>
-        </div>
+        </router-link>
     </div>
 </template>
 
@@ -19,6 +21,13 @@ export default {
     props: {
         article: ''
     },
+    methods: {
+        log() {
+            // console.log(this.$route.path)
+            // this.$router.push({path: '/home/article'})
+            // console.log(this.$route.path)
+        }
+    }
 }
 </script>
 

@@ -74,6 +74,7 @@ export default {
             //this.$http请求数据info
             this.$http.get(this.api + this.path)
                 .then((result) => {
+                    console.log(result.data);
                     let head = result.data.articles.head;
                     this.info[this.path].head = head;
                     this.head = head;
