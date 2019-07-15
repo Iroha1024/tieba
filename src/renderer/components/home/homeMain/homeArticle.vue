@@ -1,15 +1,13 @@
 <template>
     <div class="">
-        <router-link :to="{name: 'article', params: {aid: article.aid}}" tag="div" @click.native="log" v-if="article.aid">
+        <router-link :to="{name: 'article', params: {aid: article.a_id}}" tag="div" v-if="article.a_id">
             <div class="grid-content">
-                <el-image :src="article.imgUrl" fit="cover" lazy>
-                    <div slot="error" class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                    </div>
-                </el-image>
+                <div class="img">
+                    <img v-lazy="article.img"></img>
+                </div>
                 <div class="word">
                     <div class="title">{{ article.title }}</div>
-                    <div class="content">{{ article.content }}</div>
+                    <div class="content">{{ article.content | content }}</div>
                 </div>
             </div>
         </router-link>
@@ -21,11 +19,10 @@ export default {
     props: {
         article: ''
     },
-    methods: {
-        log() {
-            // console.log(this.$route.path)
-            // this.$router.push({path: '/home/article'})
-            // console.log(this.$route.path)
+    filters: {
+        //将含有图片的字符串过滤
+        content(val) {
+            return val.replace(/\[(.+?)\]/g, '');
         }
     }
 }
@@ -38,12 +35,17 @@ export default {
         background: #d3dce6;
         overflow: hidden;
         cursor: pointer;
-        .el-image {
+        .img {
             height: 100%;
             width: 100%;
             position: relative;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
-        .el-image::before {
+        .img::before {
             content: '';
             width: 120%;
             height: 30%;

@@ -20,18 +20,15 @@ export default {
                 url: '/home/recommend',
                 info: '推荐'
             },
-            {
-                url: '/home/programming',
-                info: '编程'
-            },
         ],
+        path: '/home',
         activeUrl: '/home/recommend'
       };
     },
-    mounted() {
-        this.addChildrenRoute();
+    created() {
         //发送默认跳转url给主页
         this.$emit('sendDefaultUrl', this.link[0].url);
+        this.getLinkList();
     },
     watch: {
         //路由变化时，更换激活图标
@@ -45,6 +42,28 @@ export default {
         },
     },
     methods: {
+        //根据用户id，获取关注吧列表
+        getLinkList() {
+            this.$http.get(this.api + this.path, {
+                params: {
+                    user_id: 8
+                }
+            })
+            .then((result) => {
+                let user = result.data.user;
+                user.ba_follow_list.forEach(item => {
+                    this.link.push({
+                        url: this.$route.path + '/' + item.ba_url,
+                        info: item.ba_name
+                    })
+                })
+                this.addChildrenRoute();
+                this.$router.push(this.link[0].url);
+            }).catch((err) => {
+                console.log(err);
+            });
+        },
+        //添加子路由
         addChildrenRoute() {
             this.link.forEach(link => {
                 let url = link.url.split('/').pop();

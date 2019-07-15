@@ -19,7 +19,6 @@ export default {
     data() {
         return {
             retainUrl: '',
-            defaultUrl: ''
         }
     },
     components: {
@@ -28,10 +27,7 @@ export default {
     methods: {
         //初始化时设置url
         initUrl(url) {
-            this.defaultUrl = url;
             this.retainUrl = url;
-            this.$router.push(url);
-            // console.log('push');
         }
     },
     //若曾访问，则回到原先页面

@@ -5,7 +5,7 @@
                 <el-header style="height: 250px;">
                     <el-carousel :interval="4000" type="card" height="200px">
                         <el-carousel-item v-for="(carousel, key) of head" :key="key">
-                            <img :src="carousel.imgUrl" alt="">
+                            <img v-lazy="carousel.imgUrl">
                             <h3 class="medium"></h3>
                         </el-carousel-item>
                     </el-carousel>
@@ -17,7 +17,7 @@
                         </el-col>
                     </el-row>
                     <div class="iconfont">
-                        <i class="refresh" @click="requestInfo">&#xe638;</i>
+                        <i class="refresh" @click="requestInfo(path)">&#xe638;</i>
                     </div>
                 </el-main>
             </el-container>
@@ -72,19 +72,19 @@ export default {
         requestInfo(path) {
             // console.log('请求');
             //this.$http请求数据info
-            this.$http.get(this.api + this.path)
-                .then((result) => {
-                    console.log(result.data);
-                    let head = result.data.articles.head;
-                    this.info[this.path].head = head;
-                    this.head = head;
-                    let main = result.data.articles.main;
-                    this.info[this.path].main.unshift.apply(this.info[this.path].main, main);
-                    this.main = this.info[this.path].main;
-                    // console.log(this.info);
-                }).catch((err) => {
-                    console.log(err);
-                });
+            this.$http.get(this.api + path)
+            .then((result) => {
+                // console.log(result.data);
+                let head = result.data.articles.head;
+                this.info[path].head = head;
+                this.head = head;
+                let main = result.data.articles.main;
+                this.info[path].main.unshift.apply(this.info[path].main, main);
+                this.main = this.info[path].main;
+                // console.log(this.info);
+            }).catch((err) => {
+                console.log(err);
+            });
         },
     },
     //子路由切换时修改path

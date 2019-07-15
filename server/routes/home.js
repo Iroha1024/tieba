@@ -4,100 +4,32 @@ const router = express.Router();
 const Article = require('../models/article');
 const User = require('../models/user');
 
-//模拟数据
-const articles = {
-    head: [
-        {
-            imgUrl: 'http://p1.music.126.net/HQXdIgMd6SFjK1Q8X4ScFQ==/109951164207222744.jpg',
-            url: '',
-            title: 'title',
-            content: 'content'
-        },
-        {
-            imgUrl: 'http://p1.music.126.net/FokAxnzV5CJzvdhLWby2Ug==/109951164207195767.jpg',
-            url: '',
-            title: 'title',
-            content: 'content'
-        },
-        {
-            imgUrl: 'http://p1.music.126.net/kyPinQlberwVr53GTkHo6A==/109951164207676600.jpg',
-            url: '',
-            title: 'title',
-            content: 'content'
-        },
-    ],
-    main: [
-        {
-            aid: 1,
-            imgUrl: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-            url:'',
-            title: 'title1',
-            content: 'content1'
-        },
-        {
-            aid: 2,
-            imgUrl: 'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-            url:'',
-            title: 'title2',
-            content: 'content2'
-        },
-        {
-            aid: 3,
-            imgUrl: 'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-            url:'',
-            title: 'title',
-            content: 'content'
-        },
-        {
-            aid: 4,
-            imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562830920041&di=5767c34ecc002cb02967d80847f13d6b&imgtype=0&src=http%3A%2F%2Fwx2.sinaimg.cn%2Forj360%2F87e2039fly1g3zvivwovzj20ku75utu0.jpg',
-            url:'',
-            title: 'title',
-            content: 'content'
-        },
-    ]
-}
-
-const articles2 = {
-    head: [
-        {
-            imgUrl: 'http://p1.music.126.net/HQXdIgMd6SFjK1Q8X4ScFQ==/109951164207222744.jpg',
-            url: '',
-            title: 'title',
-            content: 'content'
-        }
-    ],
-    main: [
-        {
-            aid: 5,
-            imgUrl: 'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-            url: '',
-            title: 'title',
-            content: 'content'
-        },
-        {
-            aid: 6,
-            imgUrl: 'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
-            url: '',
-            title: 'title',
-            content: 'content'
-        },
-        {
-            aid: 7,
-            imgUrl: 'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
-            url: '',
-            title: 'title',
-            content: 'content'
-        },
-    ]
-}
-
-router.get('/recommend', (req, res) => {
-    res.send({ articles: articles})
+//根据用户id，返回user
+router.get('/', (req, res) => {
+    const user_id = req.query.user_id;
+    User.selectUserByUserId(user_id).then(user => {
+        res.send({user});
+    })
 })
 
-router.get('/programming', (req, res) => {
-    res.send({ articles: articles2})
+//根据吧url，返回主页对应接收格式
+router.get('/:ba_url', (req, res) => {
+    // const ba_url = req.path.split('/')[1];
+    const ba_url = req.params.ba_url;
+    Article.selectArticlesByBaUrl(ba_url).then(articles => {
+        articles = Article.formatArticles(articles);
+        res.send({ articles});
+    })
+})
+
+//根据a_id，返回user、article
+router.get('/article/:a_id', (req, res) => {
+    const a_id = req.params.a_id;
+    User.selectUserByAId(a_id).then(user => {
+        Article.selectArticleByAId(a_id).then(article => {
+            res.send({ user, article });
+        })
+    })
 })
 
 

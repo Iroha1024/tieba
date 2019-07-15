@@ -25,15 +25,28 @@ class User {
                         user.ba_follow_list.push({
                             ba_id: item.ba_id,
                             ba_name: item.ba_name,
+                            ba_url: item.ba_url,
                         })
                     })
                     return user;
                 })
     }
-}
 
-// User.selectUserByUserId(8).then(user => {
-//     console.log(user);
-// })
+    static selectUserByAId(a_id) {
+        return db('user')
+            .join('article', 'user.user_id', '=', 'article.user_id')
+            .where('article.a_id', a_id)
+            .select()
+            .then(u => {
+                u = u[0];
+                var user = new User(
+                    u.user_id,
+                    u.user_name,
+                    u.user_img,
+                )
+                return user;
+            })
+    }
+}
 
 module.exports = User;
