@@ -53,7 +53,7 @@ export default {
                 let user = result.data.user;
                 user.ba_follow_list.forEach(item => {
                     this.link.push({
-                        url: this.$route.path + '/' + item.ba_url,
+                        url:  '/home/' + item.ba_url,
                         info: item.ba_name
                     })
                 })

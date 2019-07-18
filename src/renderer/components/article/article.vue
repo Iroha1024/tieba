@@ -1,6 +1,6 @@
 <template>
     <div class="article">
-        <el-scrollbar style="height: 100%">
+        <el-scrollbar style="height: 100%" id="scrollbar">
             <el-container>
                 <el-header>
                     <i class="el-icon-back back" @click="back"></i>
@@ -21,8 +21,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="reply">
-
+                    <div class="reply-content">
+                        <el-row type="flex" justify="start">
+                            <el-col :span="24" v-for="(reply, key) of replies" :key="key">
+                                <reply :reply="reply" :floorReplies="floorReplies"></reply>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-main>
             </el-container>
@@ -31,20 +35,38 @@
 </template>
 
 <script>
+import reply from './reply';
 export default {
     data() {
         return {
             aid: Number,
             article: {},
-            user: {}
+            user: {},
+            replies: {},
+            floorReplies: []
         }
+    },
+    components: {
+        reply
     },
     created() {
         this.aid = this.$route.params.aid;
-        // console.log('mounted', this.$route.path);
-        this.getInfo();
+    },
+    mounted() {
+        let scrollbar = document.getElementById('scrollbar');
+        scrollbar.addEventListener('scroll', this.toggleBoxShadow, true);
     },
     methods: {
+        //根据滚动条，切换阴影
+        toggleBoxShadow() {
+            let scrollTop = document.getElementById('scrollbar').children[0].scrollTop;
+            let header = document.getElementsByClassName('el-header')[0];
+            if (scrollTop == 0) {
+                header.style.boxShadow = '0px 5px 5px #a7a5a5';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        },
         back() {
             this.$router.go(-1)
         },
@@ -55,25 +77,55 @@ export default {
                 this.user = result.data.user;
                 this.article = result.data.article;
                 // console.log(result.data);
-                this.UpdateInfo();
+                this.UpdateInfo(this.article, 600);
             }).catch((err) => {
                 console.log(err);
             });
         },
-        UpdateInfo() {
-            let img_list = this.article.content.match(/\[(.+?)\]/g);
+        //获取回复
+        getReplies() {
+            this.$http(this.api + '/home/reply/' + this.aid)
+            .then((result) => {
+                this.replies = result.data.replies;
+                // console.log(result.data);
+                this.getFloorReplies();
+                this.replies.forEach(reply => {
+                    this.UpdateInfo(reply, 400);
+                })
+            }).catch((err) => {
+                console.log(err);
+            });
+        },
+        //获取楼层中回复
+        getFloorReplies() {
+            this.floorReplies = [];
+            this.replies.forEach(reply => {
+                if (!reply.is_owner) {
+                    this.floorReplies.push(reply);
+                }
+            })
+        },
+        //将content中的图片提取
+        UpdateInfo(info, img_max_height) {
+            let img_list = info.content.match(/\[(.+?)\]/g);
             if (!img_list) return;
             img_list.forEach(img => {
                 img = img.substring(1, img.length - 1);
-                this.article.content = this.article.content.replace(/\[(.+?)\]/, `
+                info.content = info.content.replace(/\[(.+?)\]/, `
                     <div class="img">
-                        <img src="${img}" style="width: 80%;"></img>
+                        <img src="${img}" style="max-height: ${img_max_height}px; object-fit: contain; max-width: 100%;"></img>
                     </div>
                 `)
             });
             // console.log(this.article.content);
-        }
+        },
     },
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.getInfo();
+            vm.getReplies();
+        })
+    }
 }
 </script>
 
@@ -83,6 +135,10 @@ export default {
         .el-container {
             margin: 0 12%;
             .el-header {
+                top: 0;
+                left: 0;
+                position: absolute;
+                width: 100%;
                 box-shadow: 0px 5px 5px #a7a5a5;
                 .back {
                     font-size: 50px;
@@ -94,6 +150,7 @@ export default {
                 }
             }
             .el-main {
+                margin-top: 60px;
                 .article-head {
                     .user {
                         .head-img {
@@ -116,13 +173,19 @@ export default {
                     .article-content {
                         font-size: 20px;
                         .title {
-                            margin: 10px 0;
+                            padding: 10px 0;
                             font-size: 35px;
                         }
                         .content {
                             word-break: break-word;
                             line-height: 25px;
                         }
+                    }
+                }
+                .reply-content {
+                    margin-top: 30px;
+                    .el-row {
+                        flex-wrap: wrap;
                     }
                 }
             }

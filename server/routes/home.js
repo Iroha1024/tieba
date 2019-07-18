@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Article = require('../models/article');
 const User = require('../models/user');
+const Reply = require('../models/reply');
 
 //根据用户id，返回user
 router.get('/', (req, res) => {
@@ -29,6 +30,14 @@ router.get('/article/:a_id', (req, res) => {
         Article.selectArticleByAId(a_id).then(article => {
             res.send({ user, article });
         })
+    })
+})
+
+//根据a_id，返回reply
+router.get('/reply/:a_id', (req, res) => {
+    const a_id = req.params.a_id;
+    Reply.selectRepliesByAId(a_id).then(replies => {
+        res.send({ replies });
     })
 })
 
