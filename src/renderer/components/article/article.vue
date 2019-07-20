@@ -24,10 +24,24 @@
                     <div class="reply-content">
                         <el-row type="flex" justify="start">
                             <el-col :span="24" v-for="(reply, key) of replies" :key="key">
-                                <reply :reply="reply" :floorReplies="floorReplies"></reply>
+                                <reply :reply="reply" :floorReplies="floorReplies" :index="key" @submitReply="submitReply"></reply>
                             </el-col>
                         </el-row>
                     </div>
+                    <div class="comments-section">
+                        <p>发表回复</p>
+                        <div class="input">
+                            <div class="list">
+                                <div class="icon"><i class="el-icon-picture"></i></div>
+                                <div class="icon"><i class="el-icon-cherry"></i></div>
+                            </div>
+                            <div class="text" id="comments-div" contenteditable="true"></div>
+                        </div>
+                        <el-button type="primary" icon="el-icon-upload" @click="submitComments">发表</el-button>
+                    </div>
+                    <el-backtop class="backtop" target=".article .el-scrollbar__wrap" :bottom="80">
+                        <i class="iconfont top">&#xe62a;</i>
+                    </el-backtop>
                 </el-main>
             </el-container>
         </el-scrollbar>
@@ -43,7 +57,7 @@ export default {
             article: {},
             user: {},
             replies: {},
-            floorReplies: []
+            floorReplies: [],
         }
     },
     components: {
@@ -57,7 +71,7 @@ export default {
         scrollbar.addEventListener('scroll', this.toggleBoxShadow, true);
     },
     methods: {
-        //根据滚动条，切换阴影
+        //根据滚动条，切换阴影是否显示
         toggleBoxShadow() {
             let scrollTop = document.getElementById('scrollbar').children[0].scrollTop;
             let header = document.getElementsByClassName('el-header')[0];
@@ -70,9 +84,10 @@ export default {
         back() {
             this.$router.go(-1)
         },
+        //获取帖子及用户信息
         getInfo() {
             // console.log('请求');
-            this.$http(this.api + '/home/article/' + this.aid)
+            this.$http.get(this.api + '/home/article/' + this.aid)
             .then((result) => {
                 this.user = result.data.user;
                 this.article = result.data.article;
@@ -84,7 +99,7 @@ export default {
         },
         //获取回复
         getReplies() {
-            this.$http(this.api + '/home/reply/' + this.aid)
+            this.$http.get(this.api + '/home/reply/' + this.aid)
             .then((result) => {
                 this.replies = result.data.replies;
                 // console.log(result.data);
@@ -119,6 +134,63 @@ export default {
             });
             // console.log(this.article.content);
         },
+        //提交楼层回复
+        submitReply(reply) {
+            reply.a_id = this.aid;
+            this.postReply(reply);
+        },
+        //提交评论区回复
+        submitComments() {
+            let div = document.getElementById('comments-div');
+            let text = div.innerText;
+            if (!text) {
+                const h = this.$createElement;
+                this.$msgbox({
+                    title: '警告',
+                    message: h('p', null, [
+                        h('span', { style: 'color: #f00' }, '输入内容不能为空！！！'),
+                    ]),
+                    confirmButtonText: '确定',
+                })
+                return;
+            }
+            let reply = {
+                a_id: this.aid,
+                user_id: 8,
+                floor_id: null,
+                content: text,
+                is_owner: 1,
+                target: null
+            }
+            // console.log(reply);
+            this.getFloorId(reply);
+        },
+        //获取当前最后层数
+        getFloorId(reply) {
+            this.$http.get(this.api + '/home/reply/floorId/' + reply.a_id) 
+            .then((result) => {
+                // console.log(result.data.floor_id);
+                reply.floor_id = result.data.floor_id + 1;
+                this.postReply(reply);
+                document.getElementById('comments-div').innerText = '';
+            }).catch((err) => {
+                console.log(err);
+            });
+        },
+        postReply(reply) {
+            this.$http.post(this.api + '/home/reply', {
+                reply
+            })
+            .then((result) => {
+                // console.log(result);
+                if (result.data.success) {
+                    //若成功，刷新回复
+                    this.getReplies();
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
     },
     beforeRouteEnter (to, from, next) {
         next(vm => {
@@ -144,7 +216,7 @@ export default {
                     font-size: 50px;
                 }
                 .back:hover {
-                    background: #3dd2ec;
+                    background: $icon-hover-color;
                     cursor: pointer;
                     border-radius: 25px;
                 }
@@ -152,6 +224,8 @@ export default {
             .el-main {
                 margin-top: 60px;
                 .article-head {
+                    border: 1px solid #d7d7d7;
+                    padding: 10px;
                     .user {
                         .head-img {
                             width: 100px;
@@ -187,6 +261,55 @@ export default {
                     .el-row {
                         flex-wrap: wrap;
                     }
+                }
+                .comments-section {
+                    border: 1px solid #d7d7d7;
+                    padding: 30px;
+                    p {
+                        margin: 0 0 20px;
+                        font-size: 20px;
+                    }
+                    .input {
+                        border: 1px solid #d7d7d7;
+                        padding: 10px 20px 20px;
+                        .list {
+                            width: 100%;
+                            font-size: 0;
+                            .icon {
+                                font-size: 20px;
+                                display: inline-block;
+                                padding: 10px;
+                                border-radius: 20px;
+                                cursor: pointer;
+                            }
+                            .icon:hover {
+                                background: $icon-hover-color;
+                            }
+                        }
+                        .text {
+                            height: 200px;
+                            background: #fff;
+                            outline: none;
+                            box-sizing: border-box;
+                        }
+                        .text:focus {
+                            border: 1px solid #2fc4c4;
+                        }
+                    }
+                    .el-button {
+                        margin: 20px 0 0;
+                    }
+                }
+                .backtop {
+                    width: 50px;
+                    height: 50px;
+                    .top {
+                        font-size: 30px;
+                        color: $font-color;
+                    }
+                }
+                .backtop:hover {
+                    background: $icon-hover-color;
                 }
             }
         }

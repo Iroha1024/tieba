@@ -41,5 +41,24 @@ router.get('/reply/:a_id', (req, res) => {
     })
 })
 
+//插入回复
+router.post('/reply',(req, res) => {
+    const reply = req.body.reply;
+    Reply.insertReply(reply).then(() => {
+        res.send({ success: true })
+    })
+})
+
+//根据a_id，返回最大楼层id
+router.get('/reply/floorId/:a_id', (req, res) => {
+    const a_id = req.params.a_id;
+    Reply.selectMaxFloorId(a_id).then(reply => {
+        let floor_id = reply[0].id;
+        if (!floor_id) {
+            floor_id = 1;
+        }
+        res.send({ floor_id })
+    })
+})
 
 module.exports = router;

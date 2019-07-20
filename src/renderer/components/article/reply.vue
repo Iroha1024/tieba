@@ -8,17 +8,32 @@
         </div>
         <div class="content">
             <div v-html="reply.content"></div>
-            <div :class="{'floor-reply': isActivated}">
-                <div class="floor-reply-item" v-for="(floor_reply, key) of floorReplies" :key="key" 
-                    v-if="hasFloorReply(reply.floor_id, floor_reply.floor_id)">
-                    <div class="floor-head-img">
-                        <img v-lazy="floor_reply.user_img">
+            <el-collapse-transition>
+                <div class="floor-reply" v-show="isActivated">
+                    <div class="floor-reply-item" v-for="(floor_reply, key) of floorReplies" :key="key" 
+                        v-if="reply.floor_id == floor_reply.floor_id">
+                        <div class="floor-head-img">
+                            <img v-lazy="floor_reply.user_img">
+                        </div>
+                        <div class="floor-user-name" :title="floor_reply.user_name">{{ floor_reply.user_name }}</div>
+                        <div class="floor-content">{{ floor_reply.content }}</div>
                     </div>
-                    <div class="floor-user-name">{{ floor_reply.user_name }}</div>
-                    <div class="floor-content">{{ floor_reply.content }}</div>
+                    <div class="my-reply">
+                        <div class="text floor-reply-div" contenteditable="true"></div>
+                        <el-button 
+                            type="primary" 
+                            icon="el-icon-upload" 
+                            :data-index="index"
+                            @click="submit($event.currentTarget)">
+                                发表
+                        </el-button>
+                    </div>
                 </div>
-            </div>
+            </el-collapse-transition>
             <div class="floor-info">
+                <div class="floor-reply-button" @click="toggleFloorReply($event.currentTarget)">
+                    回复
+                </div>
                 <div class="floor-id">{{ reply.floor_id }}楼</div>
             </div>
         </div>
@@ -29,18 +44,47 @@
 export default {
     data() {
         return {
-            isActivated: Boolean
+            isActivated: false
         }
     },
     props: {
         reply: {},
-        floorReplies: Array
+        floorReplies: Array,
+        index: Number
     },
     methods: {
-        //判断楼层中是否有回复，若无则无需渲染楼层回复背景
-        hasFloorReply(aid, bid) {
-            this.isActivated = aid == bid;
-            return aid == bid;
+        //点击回复，切换楼层回复框
+        toggleFloorReply(div) {
+            this.isActivated = !this.isActivated;
+            div.innerHTML = this.isActivated ? '收起回复' : '回复'
+        },
+        //提交回复
+        submit(button) {
+            let index = button.getAttribute('data-index');
+            let div = document.getElementsByClassName('floor-reply-div')[index];
+            let text = div.innerText;
+            if (!text) {
+                const h = this.$createElement;
+                this.$msgbox({
+                    title: '警告',
+                    message: h('p', null, [
+                        h('span', { style: 'color: #f00' }, '输入内容不能为空！！！'),
+                    ]),
+                    confirmButtonText: '确定',
+                })
+                return;
+            }
+            let reply = {
+                a_id: null,
+                user_id: 8,
+                floor_id: Number(index) + 2,
+                content: text,
+                is_owner: 0,
+                target: null
+            }
+            this.$emit('submitReply', reply);
+            // console.log(text);
+            div.innerText = '';
         }
     }
 }
@@ -105,14 +149,40 @@ export default {
                         width: fit-content;
                     }
                 }
+                .my-reply {
+                    padding: 10px 0 50px;
+                    position: relative;
+                    .text {
+                        min-height: 80px;
+                        max-height: 150px;
+                        background: #fff;
+                        outline: none;
+                        overflow-x: hidden;
+                    }
+                    .el-button {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                    }
+                }
             }
             .floor-info {
                 bottom: 0;
-                right: 0;
                 position: absolute;
+                width: calc(100% - 20px);
                 line-height: 30px;
                 height: 30px;
+                .floor-reply-button {
+                    display: inline-block;
+                }
+                .floor-reply-button:hover {
+                    cursor: pointer;
+                    color: $icon-hover-color;
+                }
                 .floor-id {
+                    display: inline-block;
+                    right: 0;
+                    position: absolute;
                     margin-right: 20px;
                 }
             }

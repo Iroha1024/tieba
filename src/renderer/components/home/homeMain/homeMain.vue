@@ -16,6 +16,9 @@
                             <home-article :article="article"></home-article>
                         </el-col>
                     </el-row>
+                    <el-backtop class="backtop" target=".homeMain .el-scrollbar__wrap" :bottom="120">
+                        <i class="iconfont top">&#xe62a;</i>
+                    </el-backtop>
                     <div class="iconfont">
                         <i class="refresh" @click="requestInfo(path)">&#xe638;</i>
                     </div>
@@ -134,19 +137,30 @@ export default {
                     border-radius: 4px;
                     margin-bottom: 40px;
                 }
+                .backtop {
+                    width: 50px;
+                    height: 50px;
+                    .top {
+                        font-size: 30px;
+                        color: $font-color;
+                    }
+                }
+                .backtop:hover {
+                    background: $icon-hover-color;
+                }
                 .refresh {
                     position: absolute;
                     font-size: 40px;
                     border-radius: 20px;
                     background: $bg-color;
-                    right: 30px;
-                    bottom: 50px;
+                    right: 25px;
+                    bottom: 20px;
                     transition: transform 1s;
                     cursor: pointer;
                 }
                 .refresh:hover {
                     transform: rotate(360deg);
-                    background: #a6e0f2;
+                    background: $icon-hover-color;
                 }
             }
         }

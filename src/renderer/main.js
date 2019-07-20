@@ -13,6 +13,7 @@ import api from './config/api';
 import 'css/reset.css';
 import 'css/iconfont.css';
 import 'element-ui/lib/theme-chalk/index.css';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
@@ -22,6 +23,7 @@ Vue.prototype.api = api;
 
 Vue.use(ElementUI);
 Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 };
+Vue.component(CollapseTransition.name, CollapseTransition)
 
 Vue.use(VueLazyload, {
     // preLoad: 1.3,

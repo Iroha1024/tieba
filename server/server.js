@@ -3,6 +3,9 @@ const app = express()
 
 const home = require('./routes/home');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/api/home', home);
 
 app.listen(3000)

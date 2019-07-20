@@ -32,6 +32,16 @@ class Reply {
                     return replies_list;
                 })
    }
+
+    //新增回复
+   static insertReply(reply) {
+        return db('reply').insert(reply)
+   }
+
+    //查询最大楼层数
+    static selectMaxFloorId(a_id) {
+        return db('reply').max('floor_id as id').where('reply.a_id', a_id)
+   }
 }
 
 module.exports = Reply;
