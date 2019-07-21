@@ -15,7 +15,6 @@ router.get('/', (req, res) => {
 
 //根据吧url，返回主页对应接收格式
 router.get('/:ba_url', (req, res) => {
-    // const ba_url = req.path.split('/')[1];
     const ba_url = req.params.ba_url;
     Article.selectArticlesByBaUrl(ba_url).then(articles => {
         articles = Article.formatArticles(articles);
@@ -26,10 +25,9 @@ router.get('/:ba_url', (req, res) => {
 //根据a_id，返回user、article
 router.get('/article/:a_id', (req, res) => {
     const a_id = req.params.a_id;
-    User.selectUserByAId(a_id).then(user => {
-        Article.selectArticleByAId(a_id).then(article => {
-            res.send({ user, article });
-        })
+    Promise.all([User.selectUserByAId(a_id), Article.selectArticleByAId(a_id)])
+    .then(result => {
+        res.send({ user: result[0], article: result[1] });
     })
 })
 

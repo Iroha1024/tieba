@@ -34,19 +34,46 @@ class User {
 
     static selectUserByAId(a_id) {
         return db('user')
-            .join('article', 'user.user_id', '=', 'article.user_id')
-            .where('article.a_id', a_id)
-            .select()
-            .then(u => {
-                u = u[0];
-                var user = new User(
-                    u.user_id,
-                    u.user_name,
-                    u.user_img,
-                )
-                return user;
-            })
+                .join('article', 'user.user_id', '=', 'article.user_id')
+                .where('article.a_id', a_id)
+                .select()
+                .then(u => {
+                    u = u[0];
+                    var user = new User(
+                        u.user_id,
+                        u.user_name,
+                        u.user_img,
+                    )
+                    return user;
+                })
     }
+
+    //验证密码
+    static checkPassword(login_name, password) {
+        return db('user')
+                .where('user.login_name', login_name)
+                .select()
+                .then(u => {
+                    u = u[0];
+                    if (!u) return false;
+                    return password === u.password;
+                })
+    }
+
+    static selectUserByLoginName(login_name) {
+        return db('user')
+                .where('user.login_name', login_name)
+                .select()
+                .then(u => {
+                    u = u[0];
+                    var user = new User(
+                        u.user_id,
+                        u.user_name,
+                        u.user_img,
+                    )
+                    return user;
+                })
+    }           
 }
 
 module.exports = User;

@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 
 import ElementUI from 'element-ui';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 import VueLazyload from 'vue-lazyload';
 
 import api from './config/api';
@@ -13,7 +14,7 @@ import api from './config/api';
 import 'css/reset.css';
 import 'css/iconfont.css';
 import 'element-ui/lib/theme-chalk/index.css';
-import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
+import 'animate.css';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios

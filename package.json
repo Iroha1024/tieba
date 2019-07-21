@@ -21,6 +21,7 @@
     "postinstall": ""
   },
   "dependencies": {
+    "animate.css": "^3.7.2",
     "axios": "^0.18.0",
     "element-ui": "^2.10.1",
     "express": "^4.17.1",
