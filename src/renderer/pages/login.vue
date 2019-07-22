@@ -1,18 +1,11 @@
 <template>
-    <div class="login">
-        <div class="info">
-            <div class="username">
-                <label for="username" class="text">用户名</label>
-                <input type="text" id="username" class="input" autofocus="autofocus" maxlength="15" 
-                    @blur="check($event.currentTarget)" pattern="^[\w_-]{4,16}$" data-msg="4到16位（字母，数字，下划线，减号）">
-                <div class="warning">
-                    <p class="tips"></p>
-                </div>
-            </div>
-            <div class="password">
-                <label for="password" class="text">密码</label>
-                <input type="password" id="password" class="input" maxlength="20" @blur="check($event.currentTarget)"
-                    pattern="^[\w]{6,20}$" data-msg="6到20位（字母，数字）">
+    <div class="login" @keyup.enter="submit">
+        <div class="content">
+            <div :class="input.name" v-for="(input, index) of inputList" :key="index">
+                <label :for="input.name" class="text">{{ input.info }}</label>
+                <input :type="index == 1 ? 'password' : 'text'" :id="input.name" class="input" 
+                       :autofocus="index == 0" :maxlength="input.maxlength" 
+                       @input="check(index, $event.currentTarget)" :pattern="input.pattern" :data-msg="input.msg">
                 <div class="warning">
                     <p class="tips"></p>
                 </div>
@@ -31,13 +24,30 @@ export default {
     data() {
         return {
             nullMsg: '输入为空！！！',
+            inputList: [
+                {
+                    info: '用户名',
+                    name: 'username',
+                    maxlength: '15',
+                    pattern: '^[\\w_-]{4,16}$',
+                    msg: '4到16位（字母，数字，下划线，减号）'
+                },
+                {
+                    info: '密码',
+                    name: 'password',
+                    maxlength: '20',
+                    pattern: '^[\\w]{6,20}$',
+                    msg: '6到20位（字母，数字）'
+                },
+            ]
         }
     },
     methods: {
         //检查是否符合正则
-        check(input) {
+        check(index, input) {
             let pattern = RegExp(input.pattern);
-            let msgNode = input.parentNode.getElementsByTagName('p')[0];
+            let content = document.querySelector('.content');
+            let msgNode = content.getElementsByTagName('p')[index];
             if (!input.value) {
                 msgNode.style.display = 'block';
                 msgNode.innerText = this.nullMsg;
@@ -71,10 +81,9 @@ export default {
                         this.sendErrorMsg();
                     } else {
                         let user = result.data.user;
-                        this.$store.dispatch('initUser', {
-                            user
-                        });
-                        console.log(this.$store.state.user);
+                        // console.log(user);
+                        this.$store.dispatch('initUser', user);
+                        // console.log(this.$store.state.user.user);
                         this.$router.push('/home');
                     }
                 }).catch((err) => {
@@ -94,30 +103,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .warning {
-        height: 20px;
-        padding: 10px 0;
-        .tips {
-            color: #eb1f1f;
-            font-size: 20px;
-            line-height: 20px;
-            white-space: nowrap;
-        }
-    }
     .login {
         width: 100%;
         height: 100%;
-        background: url('../assets/img/login_bg.png') no-repeat;
+        background: url('../assets/img/login_bg.png') no-repeat fixed;
         background-size: cover;
-        .info {
+        .content {
             width: 300px;
             height: 400px;
-            margin: 0 100px 0 auto;
-            padding: 10%;
+            margin-left: auto;
+            margin-right: 90px;
+            padding: 5%;
             font-size: 25px;
+            background: inherit;
+            position: relative;
+            top: 10%;
+            z-index: 10;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0.5em 1em rgba(0, 0, 0, 0.6);
+            border-radius: 10%;
             .text {
                 display: block;
-                padding-bottom: 10px;
+                padding-bottom: 20px;
             }
             .input {
                 border-radius: 5px;
@@ -129,19 +135,40 @@ export default {
             }
             .input:focus {
                 border-color: #2188ff;
-                box-shadow: inset 0 1px 2px rgba(27,31,35,.075), 0 0 0 0.2em rgba(3,102,214,.3);
+                box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075), 0 0 0 0.2em rgba(25, 108, 202, 0.58);
+            }
+            .warning {
+                height: 20px;
+                padding: 10px 0;
+                .tips {
+                    color: #eb1f1f;
+                    font-size: 20px;
+                    line-height: 20px;
+                    white-space: nowrap;
+                }
             }
             .button-area {
-                padding: 40px 10px;
+                padding: 60px 10px;
                 display: flex;
                 justify-content: space-around;
                 .button {
                     padding: 10px 20px;
                     cursor: pointer;
                     border-radius: 10px;
-                    background: rgba(123, 225, 255, 0.46);
+                    background: rgba(203, 235, 244, 0.32);
                 }
             }
         }
+        .content::after {
+                content: '';
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                filter: blur(5px);
+                left: 0;
+                top: 0;
+                background: inherit;
+                z-index: -1;
+            }
     }
 </style>

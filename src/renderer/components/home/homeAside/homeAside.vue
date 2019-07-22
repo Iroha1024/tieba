@@ -42,33 +42,31 @@ export default {
         },
     },
     methods: {
-        //根据用户id，获取关注吧列表
+        //vuex中获取关注吧列表
         getLinkList() {
-            this.$http.get(this.api + this.path, {
-                params: {
-                    user_id: 8
-                }
-            })
-            .then((result) => {
-                let user = result.data.user;
-                user.ba_follow_list.forEach(item => {
-                    this.link.push({
-                        url:  '/home/' + item.ba_url,
-                        info: item.ba_name
-                    })
+            let user = this.$store.getters.getUser;
+            // console.log(user);
+            user.ba_follow_list.forEach(item => {
+                this.link.push({
+                    url:  '/home/' + item.ba_url,
+                    info: item.ba_name
                 })
-                this.addChildrenRoute();
-                this.$router.push(this.link[0].url);
-            }).catch((err) => {
-                console.log(err);
-            });
+            })
+            this.addChildrenRoute();
+            this.$router.push(this.link[0].url);
         },
         //添加子路由
         addChildrenRoute() {
             this.link.forEach(link => {
                 let url = link.url.split('/').pop();
                 // console.log(url);
-                this.$router.options.routes[0].children.push({
+                let home;
+                this.$router.options.routes.forEach(route => {
+                    if (route.path == '/home') {
+                        home = route;
+                    }
+                })
+                home.children.push({
                     name: url,
                     path: url,
                     component: () => import('components/home/homeMain/homeMain'),

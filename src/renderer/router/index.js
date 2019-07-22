@@ -5,10 +5,10 @@ Vue.use(Router)
 
 export default new Router({
     routes: [
-        // {
-        //     path: '/login',
-        //     component: () => import('../pages/login')
-        // },
+        {
+            path: '/login',
+            component: () => import('../pages/login')
+        },
         {
             path: '/home',
             component: () => import('../pages/home'),
@@ -34,7 +34,7 @@ export default new Router({
         },
         {
             path: '*',
-            redirect: '/home'
+            redirect: '/login'
         }
     ],
     // scrollBehavior(to, from, savedPosition) {

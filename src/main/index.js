@@ -1,5 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 
+// import store from '../renderer/store'
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -18,9 +20,11 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 640,
-    useContentSize: true,
-    width: 960
+    // useContentSize: true,
+    width: 1080,
+    height: 720,
+    minWidth: 1080,
+    minHeight: 720
   })
 
   mainWindow.loadURL(winURL)

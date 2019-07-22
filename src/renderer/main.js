@@ -14,7 +14,7 @@ import api from './config/api';
 import 'css/reset.css';
 import 'css/iconfont.css';
 import 'element-ui/lib/theme-chalk/index.css';
-import 'animate.css';
+import 'animate.css/animate.min.css';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios

@@ -5,14 +5,6 @@ const Article = require('../models/article');
 const User = require('../models/user');
 const Reply = require('../models/reply');
 
-//根据用户id，返回user
-router.get('/', (req, res) => {
-    const user_id = req.query.user_id;
-    User.selectUserByUserId(user_id).then(user => {
-        res.send({user});
-    })
-})
-
 //根据吧url，返回主页对应接收格式
 router.get('/:ba_url', (req, res) => {
     const ba_url = req.params.ba_url;
