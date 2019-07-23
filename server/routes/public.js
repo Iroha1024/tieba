@@ -26,4 +26,12 @@ router.post('/login', (req, res) => {
     })
 })
 
+//注册检测
+router.get('/register/checkName/:name', (req, res) => {
+    const name = req.params.name;
+    User.checkLoginName(name).then(result => {
+        res.send({ existed: result });
+    })
+})
+
 module.exports = router;

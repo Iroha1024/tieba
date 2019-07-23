@@ -58,7 +58,14 @@ class User {
                 })
                 return user;
             })
-    }           
+    }     
+    
+    static checkLoginName(login_name) {
+        return db('user')
+                .where('user.login_name', login_name)
+                .select()
+                .then(u => !!u[0])
+    }
 }
 
 module.exports = User;

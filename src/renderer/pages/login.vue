@@ -12,7 +12,7 @@
             </div>
             <div class="button-area">
                 <div class="button" id="submit" @click="submit">登录</div>
-                <div class="button">注册</div>
+                <router-link to="/register" class="button" tag="div">注册</router-link>
             </div>
         </div>
     </div>
@@ -47,13 +47,13 @@ export default {
         check(index, input) {
             let pattern = RegExp(input.pattern);
             let content = document.querySelector('.content');
-            let msgNode = content.getElementsByTagName('p')[index];
+            let msgNode = content.getElementsByClassName('tips')[index];
             if (!input.value) {
                 msgNode.style.display = 'block';
                 msgNode.innerText = this.nullMsg;
                 return;
             }
-            if(pattern.test(input.value)) {
+            if (pattern.test(input.value)) {
                 msgNode.style.display = 'none';
             } else {
                 msgNode.style.display = 'block';
@@ -66,7 +66,7 @@ export default {
             let arr = [username, password];
             //所有报错消失时，才允许登录
             let judge = arr.every(input => {
-                let msgNode = input.parentNode.getElementsByTagName('p')[0];
+                let msgNode = input.parentNode.getElementsByClassName('tips')[0];
                 return msgNode.style.display === 'none';
             })
             if (judge) {
