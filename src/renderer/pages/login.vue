@@ -70,7 +70,7 @@ export default {
                 return msgNode.style.display === 'none';
             })
             if (judge) {
-                this.$http.post(this.api + '/public/login', {
+                this.$http.post(this.api + '/login', {
                     username: username.value,
                     password: password.value,
                 })
@@ -84,6 +84,7 @@ export default {
                         // console.log(user);
                         this.$store.dispatch('initUser', user);
                         // console.log(this.$store.state.user.user);
+                        this.$destroy('login');
                         this.$router.push('/home');
                     }
                 }).catch((err) => {
@@ -141,7 +142,7 @@ export default {
                 height: 20px;
                 padding: 10px 0;
                 .tips {
-                    color: #eb1f1f;
+                    color: $warning-font-color;
                     font-size: 20px;
                     line-height: 20px;
                     white-space: nowrap;

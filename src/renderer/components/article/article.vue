@@ -156,7 +156,7 @@ export default {
             }
             let reply = {
                 a_id: this.aid,
-                user_id: 8,
+                user_id: this.$store.getters.getUser.user_id,
                 floor_id: null,
                 content: text,
                 is_owner: 1,
@@ -224,7 +224,7 @@ export default {
             .el-main {
                 margin-top: 60px;
                 .article-head {
-                    border: 1px solid #d7d7d7;
+                    border: 1px solid $border-color;
                     padding: 10px;
                     .user {
                         .head-img {
@@ -263,14 +263,14 @@ export default {
                     }
                 }
                 .comments-section {
-                    border: 1px solid #d7d7d7;
+                    border: 1px solid $border-color;
                     padding: 30px;
                     p {
                         margin: 0 0 20px;
                         font-size: 20px;
                     }
                     .input {
-                        border: 1px solid #d7d7d7;
+                        border: 1px solid $border-color;
                         padding: 10px 20px 20px;
                         .list {
                             width: 100%;
@@ -291,6 +291,8 @@ export default {
                             background: #fff;
                             outline: none;
                             box-sizing: border-box;
+                            font-size: 20px;
+                            line-height: 25px;
                         }
                         .text:focus {
                             border: 1px solid #2fc4c4;

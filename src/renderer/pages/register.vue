@@ -1,5 +1,6 @@
 <template>
     <div class="register">
+        <i class="el-icon-back back" @click="back"></i>
         <div class="content">
             <div class="info">
                 <div :class="[input.name, row]" v-for="(input, index) of inputList" :key="index">
@@ -12,7 +13,7 @@
                         <p class="tips"></p>
                     </div>
                 </div>
-                <div class="submit" @click="submit">
+                <div class="submit" id="submit" @click="submit">
                     注册
                 </div>
             </div>
@@ -22,6 +23,7 @@
 
 <script>
 import debounce from '../utils/debounce';
+import animateCSS from '../utils/animateCSS';
 export default {
     data() {
         return {
@@ -53,6 +55,9 @@ export default {
         }
     },
     methods: {
+        back() {
+            this.$router.go(-1)
+        },
         //切换提示
         toggleTips(msgNode, icon, type, msg) {
             switch (type) {
@@ -103,9 +108,9 @@ export default {
         },
         //检查数据库中是否已存在此用户名
         checkHasName: debounce(function(msg, icon, name) {
-            this.$http.get(this.api + '/public/register/checkName/' + name)
+            this.$http.get(this.api + '/register/checkName/' + name)
             .then((result) => {
-                console.log('in');
+                // console.log('in');
                 if (result.data.existed) {
                     msg.style.display = 'block';
                     icon.style.display = 'none';
@@ -121,7 +126,54 @@ export default {
             let flag = iconList.every(icon => {
                 return icon.style.display === 'inline-block';
             })
-            
+            if (!flag) {
+                this.sendErrorMsg();
+                animateCSS('#submit', 'swing');
+                return;
+            }
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            var recheck = () => {
+                flag = iconList.every(icon => {
+                    return icon.style.display === 'inline-block';
+                })
+                if (!flag) {
+                    loading.close();
+                    return;
+                } else {
+                    let username = document.getElementById('username');
+                    let password = document.getElementById('password');
+                    let arr = [username, password];
+                    this.$http.post(this.api + '/register/', {
+                        username: username.value,
+                        password: password.value,
+                    })
+                    .then((result) => {
+                        if (result.data.success) {
+                            // console.log(result.data.user);
+                            let user = result.data.user;
+                            this.$store.dispatch('initUser', user);
+                            loading.close();
+                            this.$destroy('register');
+                            this.$router.push('/home');
+                        }
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                }
+            }
+            setTimeout(recheck, 2000);
+        },
+        sendErrorMsg() {
+            this.$notify.error({
+                title: '错误',
+                message: '请将信息填写完整！！！',
+                duration: 2000
+            });
         }
     }
 }
@@ -131,6 +183,17 @@ export default {
     .register {
         height: 100%;
         background: $bg-color;
+        .back {
+            font-size: 50px;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+        }
+        .back:hover {
+            background: $icon-hover-color;
+            cursor: pointer;
+            border-radius: 25px;
+        }
         .content {
             margin: 0 auto;
             width: 50%;
@@ -170,7 +233,7 @@ export default {
                         position: relative;
                         left: 30%;
                         .tips {
-                            color: #eb1f1f;
+                            color: $warning-font-color;
                             font-size: 20px;
                             line-height: 20px;
                             white-space: nowrap;

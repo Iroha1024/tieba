@@ -76,7 +76,7 @@ export default {
             }
             let reply = {
                 a_id: null,
-                user_id: 8,
+                user_id: this.$store.getters.getUser.user_id,
                 floor_id: Number(index) + 2,
                 content: text,
                 is_owner: 0,
@@ -94,7 +94,7 @@ export default {
     .reply {
         width: 100%;
         display: inline-flex;
-        border: 1px solid #d7d7d7;
+        border: 1px solid $border-color;
         box-sizing: border-box;
         margin-bottom: 30px;
         .user {
@@ -121,7 +121,7 @@ export default {
             position: relative;
             word-break: break-word;
             padding: 20px 0 30px 20px;
-            border-left: 1px solid #d7d7d7;
+            border-left: 1px solid $border-color;
             .floor-reply {
                 background: linear-gradient(rgba(255, 255, 255, 0.07), rgba(174, 174, 174, 0.62));
                 padding: 20px;

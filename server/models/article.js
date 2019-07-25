@@ -46,7 +46,6 @@ class Article {
                         )
                         articles_list.push(article);
                     })
-                    // console.log(articles_list);
                     return articles_list;
                 })
     }
@@ -76,6 +75,27 @@ class Article {
         }
         articles.main = articles_list;
         return articles;
+    }
+
+    //根据user_id查询文章
+    static selectArticles(user_id) {
+        return db('article')
+                .join('user', 'user.user_id', '=', 'article.user_id')
+                .where('user.user_id', user_id)
+                .then(a => {
+                    let articles_list = [];
+                    a.forEach(item => {
+                        let article = new Article(
+                            item.a_id,
+                            item.user_id,
+                            item.ba_id,
+                            item.title,
+                            item.content,
+                        )
+                        articles_list.push(article);
+                    })
+                    return articles_list;
+                })
     }
 }
 
