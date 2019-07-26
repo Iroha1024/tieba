@@ -67,7 +67,7 @@ export default {
                     }
                 })
                 home.children.push({
-                    name: url,
+                    // name: url,
                     path: url,
                     component: () => import('components/home/homeMain/homeMain'),
                 })

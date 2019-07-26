@@ -1,7 +1,7 @@
 <template>
     <div class="infoArticle">
-        <router-link :to="{name: 'article', params: {aid: item.a_id}}" tag="div" v-if="item.a_id" 
-            class="item" v-for="(item, index) of articles" :key="index">
+        <router-link :to="{path: 'info/article/' + item.a_id}" tag="div" v-if="item.a_id" 
+            class="item" v-for="(item, index) of articles" :key="index" @click.native="hidden">
             <div class="title">{{ item.title }}</div>
             <div class="img">
                 <img v-lazy="item.img">
@@ -28,6 +28,9 @@ export default {
         }
     },
     methods: {
+        hidden() {
+            this.$emit('hidden');
+        },
         //请求帖子列表
         requestInfoArticle() {
             let user_id = this.$store.getters.getUser.user_id;

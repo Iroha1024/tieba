@@ -19,7 +19,6 @@ export default new Router({
             children: [
                {
                     path: 'article/:aid',
-                    name: 'article',
                     component: () => import('components/article/article')
                }
             ]
@@ -34,7 +33,13 @@ export default new Router({
         },
         {
             path: '/info',
-            component: () => import('../pages/info')
+            component: () => import('../pages/info'),
+            children: [
+                {
+                    path: 'article/:aid',
+                    component: () => import('components/article/article')
+                }
+            ]
         },
         {
             path: '*',

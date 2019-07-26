@@ -2,7 +2,7 @@
     <div class="article">
         <el-scrollbar style="height: 100%" id="scrollbar">
             <el-container>
-                <el-header>
+                <el-header class="article-el-header">
                     <i class="el-icon-back back" @click="back"></i>
                 </el-header>
                 <el-main>
@@ -74,7 +74,7 @@ export default {
         //根据滚动条，切换阴影是否显示
         toggleBoxShadow() {
             let scrollTop = document.getElementById('scrollbar').children[0].scrollTop;
-            let header = document.getElementsByClassName('el-header')[0];
+            let header = document.getElementsByClassName('article-el-header')[0];
             if (scrollTop == 0) {
                 header.style.boxShadow = '0px 5px 5px #a7a5a5';
             } else {

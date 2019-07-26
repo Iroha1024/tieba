@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <router-link :to="{name: 'article', params: {aid: article.a_id}}" tag="div" v-if="article.a_id">
+        <router-link :to="{path: 'article/' + article.a_id}" tag="div" v-if="article.a_id">
             <div class="grid-content">
                 <div class="img">
                     <img v-lazy="article.img"></img>

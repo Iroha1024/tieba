@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" v-if="exist">
         <keep-alive>
             <router-view></router-view>
         </keep-alive>
@@ -16,6 +16,16 @@ export default {
     components: {
         bottomNav
     },
+    data() {
+        return {
+            exist: true
+        }
+    },
+    provide() {
+        return {
+            reload: this.reload
+        }
+    },
     created() {
         this.$store.dispatch('initUser', '');
         // console.log('app', this.$store.getters.getUser);
@@ -30,6 +40,12 @@ export default {
         changeBodyStyle() {
             let body = document.body;
             body.style.height = '100%';
+        },
+        //重新加载app
+        async reload () {
+            this.exist = false;
+            await this.$nextTick();
+            this.exist = true;
         }
     },
 }

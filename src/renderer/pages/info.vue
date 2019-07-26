@@ -1,6 +1,6 @@
 <template>
     <div class="info">
-        <el-scrollbar style="height: 100%" id="scrollbar">
+        <el-scrollbar style="height: 100%" v-show="show">
             <el-container>
                 <el-header style="height: 100%">
                     <div class="bg-img">
@@ -26,13 +26,16 @@
                 <el-main>
                     <el-tabs v-model="activeName">
                         <el-tab-pane label="帖子" name="first">
-                            <info-article></info-article>
+                            <info-article @hidden="hidden"></info-article>
                         </el-tab-pane>
                         <el-tab-pane label="其他" name="second">其他</el-tab-pane>
                     </el-tabs>
                 </el-main>
             </el-container>
         </el-scrollbar>
+        <keep-alive>
+            <router-view :key="$route.path"></router-view>
+        </keep-alive>
     </div>
 </template>
 
@@ -42,12 +45,14 @@ import infoArticle from 'components/info/infoArticle';
 export default {
     data() {
         return {
-            activeName: 'first'
+            activeName: 'first',
+            show: true,
         };
     },
     components: {
         infoArticle
     },
+    inject: ['reload'],
     // created() {
     //     let user = {
     //         user_id: 8,
@@ -61,7 +66,19 @@ export default {
             'getUser'
         ])
     },
+    watch: {
+        //回到info页面时显示
+        $route() {
+            if (this.$route.path == '/info') {
+                this.show = true;
+            }
+        }
+    },
     methods: {
+        //隐藏info页面
+        hidden() {
+            this.show = false;
+        },
         //注销
         exit() {
             const h = this.$createElement;
@@ -75,15 +92,19 @@ export default {
                 cancelButtonText: '取消',
                 beforeClose: (action, instance, done) => {
                     if (action === 'confirm') {
-                        //未成功清空
+                        //退出登录
                         this.$store.dispatch('initUser', '');
+                        this.reload();
                         this.$router.push('/login');
+                        done();
+                    } else {
                         done();
                     }
                 }
             })
+            .catch(() => {})
         },
-    }
+    },
 }
 </script>
 
