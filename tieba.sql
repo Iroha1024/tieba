@@ -64,7 +64,7 @@ CREATE TABLE `reply` (
 
 /*Data for the table `reply` */
 
-insert  into `reply`(`a_id`,`user_id`,`floor_id`,`content`,`is_owner`,`target`) values (1,2,2,'谢谢，我已经学会了（雾）[http://5b0988e595225.cdn.sohucs.com/images/20180901/6287a1083e7641a6bb380c67a04d815d.jpeg]',1,NULL),(1,3,3,'第一张当头像不错，但是单独放出来有点亮眼睛',1,NULL),(1,4,4,'色彩鲜明，可以',1,NULL),(1,1,2,'大佬',0,NULL),(2,6,2,'舒服了',1,NULL),(2,7,3,'要被猪宰了吗',1,NULL),(1,10,2,' 原图？交粗来',0,NULL),(1,8,2,'gkd',0,NULL),(3,8,2,'7/20 完成回复功能',1,NULL);
+insert  into `reply`(`a_id`,`user_id`,`floor_id`,`content`,`is_owner`,`target`) values (1,2,2,'谢谢，我已经学会了（雾）[http://5b0988e595225.cdn.sohucs.com/images/20180901/6287a1083e7641a6bb380c67a04d815d.jpeg]',1,NULL),(1,3,3,'第一张当头像不错，但是单独放出来有点亮眼睛',1,NULL),(1,4,4,'色彩鲜明，可以',1,NULL),(1,1,2,'大佬',0,NULL),(2,6,2,'舒服了',1,NULL),(2,7,3,'要被猪宰了吗',1,NULL),(1,10,2,' 原图？交粗来',0,NULL),(1,8,2,'gkd',0,NULL),(3,8,2,'7/20 完成回复功能',1,NULL),(3,41,3,'注册成功',1,NULL);
 
 /*Table structure for table `user` */
 
@@ -77,11 +77,11 @@ CREATE TABLE `user` (
   `user_name` char(20) NOT NULL,
   `user_img` text,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user` */
 
-insert  into `user`(`user_id`,`login_name`,`password`,`user_name`,`user_img`) values (1,'','','中野二乃','http://tb.himg.baidu.com/sys/portrait/item/b3094e0f?t=1553058806'),(2,'','','特色抽象猫娘','http://tb.himg.baidu.com/sys/portrait/item/ce6fdf30?t=1559900563'),(3,'','','秃发树机能11\r\n','http://tb.himg.baidu.com/sys/portrait/item/e809b0d2?t=1533781061'),(4,'','','执花','http://tb.himg.baidu.com/sys/portrait/item/5d47ff5d?t=1552959842'),(5,'','','绿蚁新醅酒','http://tb.himg.baidu.com/sys/portrait/item/90e5ce93?t=1530603771'),(6,'','','倾城丶追梦','http://tb.himg.baidu.com/sys/portrait/item/32492e62?t=1475316561'),(7,'','','月見里時雨','http://tb.himg.baidu.com/sys/portrait/item/f1fd77cc?t=1554267312'),(8,'iroha','123456','iroha','https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1563186077&di=81f3a719d4315d27a500d7b8e4abc00f&src=http://b-ssl.duitang.com/uploads/item/201607/30/20160730131742_TNhdE.thumb.700_0.jpeg'),(9,'','','sszzxgz','http://tb.himg.baidu.com/sys/portrait/item/e685e7ce?t=1541486485'),(10,'','','破晓却桑榆','http://tb.himg.baidu.com/sys/portrait/item/97b13a59?t=1525205015');
+insert  into `user`(`user_id`,`login_name`,`password`,`user_name`,`user_img`) values (1,'','','中野二乃','http://tb.himg.baidu.com/sys/portrait/item/b3094e0f?t=1553058806'),(2,'','','特色抽象猫娘','http://tb.himg.baidu.com/sys/portrait/item/ce6fdf30?t=1559900563'),(3,'','','秃发树机能11\r\n','http://tb.himg.baidu.com/sys/portrait/item/e809b0d2?t=1533781061'),(4,'','','执花','http://tb.himg.baidu.com/sys/portrait/item/5d47ff5d?t=1552959842'),(5,'','','绿蚁新醅酒','http://tb.himg.baidu.com/sys/portrait/item/90e5ce93?t=1530603771'),(6,'','','倾城丶追梦','http://tb.himg.baidu.com/sys/portrait/item/32492e62?t=1475316561'),(7,'','','月見里時雨','http://tb.himg.baidu.com/sys/portrait/item/f1fd77cc?t=1554267312'),(8,'iroha','123456','iroha','https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1563186077&di=81f3a719d4315d27a500d7b8e4abc00f&src=http://b-ssl.duitang.com/uploads/item/201607/30/20160730131742_TNhdE.thumb.700_0.jpeg'),(9,'','','sszzxgz','http://tb.himg.baidu.com/sys/portrait/item/e685e7ce?t=1541486485'),(10,'','','破晓却桑榆','http://tb.himg.baidu.com/sys/portrait/item/97b13a59?t=1525205015'),(41,'kurumi','123456','kurumi',NULL);
 
 /*Table structure for table `user_ba` */
 
